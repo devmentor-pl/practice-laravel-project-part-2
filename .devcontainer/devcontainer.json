@@ -1,0 +1,48 @@
+// Konfiguracja Codespaces / Dev Containers dla zadań z Laravela (devmentor.pl)
+// Dokumentacja formatu: https://containers.dev/implementors/json_reference/
+{
+	"name": "Laravel (PHP 8.4, Node LTS, SQLite)",
+	"image": "mcr.microsoft.com/devcontainers/php:1-8.4",
+
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "lts"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+
+	// Raz, po utworzeniu Codespace: narzędzia + zależności projektu, .env, migracje, build
+	"postCreateCommand": "bash .devcontainer/setup.sh",
+
+	// Przy każdym uruchomieniu Codespace: serwer aplikacji, kolejka i Mailpit (w tle)
+	"postStartCommand": "bash .devcontainer/start.sh",
+
+	"forwardPorts": [8000, 8025, 5173],
+	"portsAttributes": {
+		"8000": { "label": "Laravel", "onAutoForward": "openBrowser" },
+		"8025": { "label": "Mailpit (podgląd e-maili)", "onAutoForward": "silent" },
+		"5173": { "label": "Vite (HMR)", "onAutoForward": "silent" },
+		"1025": { "label": "Mailpit SMTP", "onAutoForward": "ignore" }
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"laravel.vscode-laravel",
+				"bmewburn.vscode-intelephense-client",
+				"bradlc.vscode-tailwindcss",
+				"m1guelpf.better-pest",
+				"qwtel.sqlite-viewer",
+				"EditorConfig.EditorConfig"
+			],
+			"settings": {
+				"php.validate.executablePath": "/usr/local/bin/php",
+				"files.associations": { "*.blade.php": "blade" }
+			}
+		}
+	},
+
+	"hostRequirements": {
+		"cpus": 2
+	}
+}
